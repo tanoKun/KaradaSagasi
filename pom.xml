@@ -68,7 +68,8 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.12.2-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/patched_1.12.2.jar</systemPath>
         </dependency>
     </dependencies>
 </project>
