@@ -2,3 +2,6 @@ name: KaradaSagasi
 version: ${project.version}
 main: com.github.tanokun.karadasagasi.KaradaSagasi
 authors: [ tanoKun ]
+depend: [ProtocolLib]
+
+commands:

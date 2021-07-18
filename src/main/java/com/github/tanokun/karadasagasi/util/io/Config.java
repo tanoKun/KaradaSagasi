@@ -90,4 +90,8 @@ public class Config {
     public String getName(){
         return fileName;
     }
+
+    public File getFile() {
+        return file;
+    }
 }
