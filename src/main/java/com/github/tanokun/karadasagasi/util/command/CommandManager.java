@@ -11,18 +11,16 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 public class CommandManager {
-    private final Plugin plugin;
     private final CraftServer server;
 
     private HashMap<String, CommandEntity> commands = new HashMap<>();
 
-    public CommandManager(Plugin plugin){
-        this.plugin = plugin;
+    public CommandManager(){
         this.server = (CraftServer) Bukkit.getServer();
     }
 
-    public void registerCommand(Class<?> clazz) {
-        for (Method method : clazz.getMethods()) {
+    public void registerCommand(Object c) {
+        for (Method method : c.getClass().getMethods()) {
             if (method.getAnnotation(Command.class) == null && method.getAnnotation(TabComplete.class) == null) continue;
             Command command = method.getAnnotation(Command.class);
             CommandEntity commandEntity = null;
@@ -30,15 +28,9 @@ public class CommandManager {
             if (method.getAnnotation(TabComplete.class) != null){
                 TabComplete tabComplete = method.getAnnotation(TabComplete.class);
                 if (commands.get(tabComplete.parentName()) == null) {
-                    try {
-                        commandEntity = new CommandEntity(tabComplete.parentName(), clazz.newInstance());
-                    } catch (InstantiationException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
+                    commandEntity = new CommandEntity(tabComplete.parentName(), c);
                     commands.put(tabComplete.parentName(), commandEntity);
-                    server.getCommandMap().register("tanorpg", commandEntity);
+                    server.getCommandMap().register("karadasagasi", commandEntity);
                 }
                 commands.get(tabComplete.parentName()).registerTabComplete(tabComplete.name(), method);
                 continue;
@@ -47,11 +39,8 @@ public class CommandManager {
             if (commands.containsKey(command.parentName())) {
                 commandEntity = commands.get(command.parentName());
             } else {
-                try {commandEntity = new CommandEntity(command.parentName(), clazz.newInstance());
-                } catch (InstantiationException e) {e.printStackTrace();
-                } catch (IllegalAccessException e) {e.printStackTrace();}
-
-                server.getCommandMap().register("tanorpg", commandEntity);
+                commandEntity = new CommandEntity(command.parentName(), c);
+                server.getCommandMap().register("karadasagasi", commandEntity);
                 commands.put(command.parentName(), commandEntity);
                 commandEntity.registerSubCommand(command.name(), method);
             }
@@ -102,7 +91,7 @@ public class CommandManager {
         public boolean execute(CommandSender sender, String s, String[] args) {
             CommandContext commandContext = new CommandContext(sender, args);
             String sub = commandContext.getArg(0, "");
-            if (sub.equals("")) {sender.sendMessage("§c引数が存在しません"); return true;}
+
             if (!subs.containsKey(sub)) {sender.sendMessage("§cその引数は存在しません (" + sub + ")"); return true;}
 
             if (subs.get(sub).getAnnotation(CommandPermission.class) != null){
@@ -115,7 +104,9 @@ public class CommandManager {
 
             try {
                 ArrayList<String> test = new ArrayList<>(Arrays.asList(args));
-                test.remove(0);
+                if (!sub.contains("") || subs.size() != 1) {
+                    test.remove(0);
+                }
                 subs.get(sub).invoke(object, sender, new CommandContext(test.toArray(new String[test.size()])));
             } catch (IllegalAccessException e) { e.printStackTrace(); }
             catch (InvocationTargetException exception) { exception.printStackTrace();}
