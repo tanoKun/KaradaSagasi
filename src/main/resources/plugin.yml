@@ -2,6 +2,6 @@ name: KaradaSagasi
 version: ${project.version}
 main: com.github.tanokun.karadasagasi.KaradaSagasi
 authors: [ tanoKun ]
-depend: [ProtocolLib]
+depend: [ProtocolLib, WorldGuard, HolographicDisplays]
 
 commands:
