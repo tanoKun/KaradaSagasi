@@ -38,25 +38,25 @@ public class ChestLocationMap  implements SaveMarker<ChestLocationMap> {
         int i = 0;
         config.getConfig().set(key + ".ChestLocations", null);
         for (Location location : firstFloorChestLocations) {
-            YamlUtils.setLocation(location, config, key + ".ChestLocations.first." + i);
+            YamlUtils.setLocation(location, config, key + ".ChestLocations.first.No_" + i);
             i++;
         }
 
         i = 0;
         for (Location location : secondFloorChestLocations) {
-            YamlUtils.setLocation(location, config, key + ".ChestLocations.second." + i);
+            YamlUtils.setLocation(location, config, key + ".ChestLocations.second.No_" + i);
             i++;
         }
 
         i = 0;
         for (Location location : thirdFloorChestLocations) {
-            YamlUtils.setLocation(location, config, key + ".ChestLocations.third." + i);
+            YamlUtils.setLocation(location, config, key + ".ChestLocations.third.No_" + i);
             i++;
         }
 
         i = 0;
         for (Location location : fourthFloorChestLocations) {
-            YamlUtils.setLocation(location, config, key + ".ChestLocations.fourth." + i);
+            YamlUtils.setLocation(location, config, key + ".ChestLocations.fourth.No_" + i);
             i++;
         }
     }
@@ -65,25 +65,25 @@ public class ChestLocationMap  implements SaveMarker<ChestLocationMap> {
     public ChestLocationMap load(Config config, String key) {
         if (config.getConfig().getConfigurationSection(key + ".ChestLocations.first") != null) {
             for (String locT : config.getConfig().getConfigurationSection(key + ".ChestLocations.first").getKeys(false)) {
-                firstFloorChestLocations.add(YamlUtils.getLocation(config, config.getConfig().getString(key + ".ChestLocations.first." + locT)));
+                firstFloorChestLocations.add(YamlUtils.getLocation(config, key + ".ChestLocations.first." + locT));
             }
         }
 
         if (config.getConfig().getConfigurationSection(key + ".ChestLocations.second") != null) {
             for (String locT : config.getConfig().getConfigurationSection(key + ".ChestLocations.second").getKeys(false)) {
-                secondFloorChestLocations.add(YamlUtils.getLocation(config, config.getConfig().getString(key + ".ChestLocations.second." + locT)));
+                secondFloorChestLocations.add(YamlUtils.getLocation(config, key + ".ChestLocations.second." + locT));
             }
         }
 
         if (config.getConfig().getConfigurationSection(key + ".ChestLocations.third") != null) {
             for (String locT : config.getConfig().getConfigurationSection(key + ".ChestLocations.third").getKeys(false)) {
-                thirdFloorChestLocations.add(YamlUtils.getLocation(config, config.getConfig().getString(key + ".ChestLocations.third." + locT)));
+                thirdFloorChestLocations.add(YamlUtils.getLocation(config, key + ".ChestLocations.third." + locT));
             }
         }
 
         if (config.getConfig().getConfigurationSection(key + ".ChestLocations.fourth") != null) {
             for (String locT : config.getConfig().getConfigurationSection(key + ".ChestLocations.fourth").getKeys(false)) {
-                fourthFloorChestLocations.add(YamlUtils.getLocation(config, config.getConfig().getString(key + ".ChestLocations.fourth." + locT)));
+                fourthFloorChestLocations.add(YamlUtils.getLocation(config, key + ".ChestLocations.fourth." + locT));
             }
         }
         return this;
