@@ -7,6 +7,9 @@ import com.github.tanokun.karadasagasi.util.io.Config;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Random;
 
 public class StageManager implements SaveMarker<StageManager> {
     private HashMap<String, Stage> stages = new HashMap<>();
@@ -21,6 +24,10 @@ public class StageManager implements SaveMarker<StageManager> {
 
     public Stage getStage(String id) {
         return stages.get(id);
+    }
+
+    public Stage getRandomStage() {
+        return stages.values().toArray(new Stage[stages.size()])[new Random().nextInt(stages.size())];
     }
 
     public HashMap<String, Stage> getStages() {

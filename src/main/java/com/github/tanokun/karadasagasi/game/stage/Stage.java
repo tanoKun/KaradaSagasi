@@ -24,6 +24,9 @@ public class Stage implements SaveMarker<Stage> {
 
     private Location bodyLocation = new Location(Bukkit.getWorld("world"), 0, 0, 0);
 
+    private int minPlayerAmount = 2;
+    private int maxPlayerAmount = 10;
+
     public Stage(String name) {
         this.name = name;
         killerTeleportLocationMap = new KillerTeleportLocationMap();
@@ -59,6 +62,14 @@ public class Stage implements SaveMarker<Stage> {
         return bodyLocation;
     }
 
+    public int getMinPlayerAmount() {
+        return minPlayerAmount;
+    }
+
+    public int getMaxPlayerAmount() {
+        return maxPlayerAmount;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -75,12 +86,22 @@ public class Stage implements SaveMarker<Stage> {
         this.bodyLocation = bodyLocation;
     }
 
+    public void setMinPlayerAmount(int minPlayerAmount) {
+        this.minPlayerAmount = minPlayerAmount;
+    }
+
+    public void setMaxPlayerAmount(int maxPlayerAmount) {
+        this.maxPlayerAmount = maxPlayerAmount;
+    }
+
     @Override
     public void save(Config config, String key) {
         config.getConfig().set(key + ".name", name);
         config.getConfig().set(key + ".time", time);
         YamlUtils.setLocation(spawnStudentLocation, config, key + ".spawnStudentLocation");
         YamlUtils.setLocation(bodyLocation, config, key + ".bodyLocation");
+        config.getConfig().set(key + ".minPlayerAmount", minPlayerAmount);
+        config.getConfig().set(key + ".maxPlayerAmount", maxPlayerAmount);
 
         killerTeleportLocationMap.save(config, key);
         prisonLocationMap.save(config, key);
@@ -92,6 +113,8 @@ public class Stage implements SaveMarker<Stage> {
         time = config.getConfig().getInt(key + ".time");
         spawnStudentLocation = YamlUtils.getLocation(config, key + ".spawnStudentLocation");
         bodyLocation = YamlUtils.getLocation(config, key + ".bodyLocation");
+        minPlayerAmount = config.getConfig().getInt(key + ".minPlayerAmount");
+        maxPlayerAmount = config.getConfig().getInt(key + ".maxPlayerAmount");
 
         killerTeleportLocationMap.load(config, key);
         prisonLocationMap.load(config, key);

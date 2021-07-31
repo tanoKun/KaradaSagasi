@@ -53,7 +53,7 @@ public class SetPrisonDataMenu implements InventoryProvider {
         }));
 
         contents.set(0, 6, ClickableItem.of(ItemUtils.createItem(Material.FEATHER, "§c§l牢屋名", Arrays.asList("牢屋名: " + teleportLocation.getName()), 1, false), no -> {
-            new AnvilGUI("§c§l牢屋名", ItemUtils.createItem(Material.ANVIL, "名前を入力", 1, false), e -> {
+            new AnvilGUI("§c§l牢屋名", ItemUtils.createItem(Material.ANVIL, "名前を入力 (" + "§7現在: " + teleportLocation.getName() + ")", 1, false), e -> {
                 String name = e.getItem().getItemMeta().getDisplayName();
 
                 KaradaSagasi.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1 ,1);

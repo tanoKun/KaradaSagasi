@@ -19,7 +19,8 @@ public class PrisonLocationMap implements SaveMarker<PrisonLocationMap> {
     public void save(Config config, String key) {
         config.getConfig().set(key + ".prisonTeleportLocations", null);
         for (TeleportLocation tl : prisonTeleportLocations) {
-            YamlUtils.setLocation(tl.getLocation(), config, key + ".prisonTeleportLocations." + tl.getName());
+            YamlUtils.setLocation(tl.getLocation(), config, key + ".prisonTeleportLocations." + tl.getName() + ".location");
+            config.getConfig().set(key + ".prisonTeleportLocations." + tl.getName() + ".rgName", tl.getRgName());
         }
     }
 
@@ -28,8 +29,10 @@ public class PrisonLocationMap implements SaveMarker<PrisonLocationMap> {
         if (config.getConfig().getConfigurationSection(key + ".prisonTeleportLocations") == null) return this;
 
         for (String name : config.getConfig().getConfigurationSection(key + ".prisonTeleportLocations").getKeys(false)) {
-            Location location = YamlUtils.getLocation(config, key + ".prisonTeleportLocations." + name);
-            prisonTeleportLocations.add(new TeleportLocation(location, name));
+            Location location = YamlUtils.getLocation(config, key + ".prisonTeleportLocations." + name + ".location");
+            TeleportLocation teleportLocation = new TeleportLocation(location, name);
+            teleportLocation.setRgName(config.getConfig().getString(key + ".prisonTeleportLocations." + name + ".rgName", null));
+            prisonTeleportLocations.add(teleportLocation);
         }
 
         return this;
