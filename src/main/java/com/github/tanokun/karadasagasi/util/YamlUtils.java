@@ -1,9 +1,9 @@
 package com.github.tanokun.karadasagasi.util;
 
-import com.github.tanokun.karadasagasi.util.io.Config;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
+        import com.github.tanokun.karadasagasi.util.io.Config;
+        import org.bukkit.Bukkit;
+        import org.bukkit.Location;
+        import org.bukkit.World;
 
 public class YamlUtils {
     public static void setLocation(Location location, Config config, String key) {
@@ -25,11 +25,12 @@ public class YamlUtils {
 
             return new Location(world, x, y, z, p, y2);
         }catch (Exception e) {
+            e.printStackTrace();
             return new Location(Bukkit.getWorld("world"), 0, 0, 0);
         }
     }
 
     public static String LocationToString(Location location) {
-        return Math.round(location.getX()) + " " + Math.round(location.getY()) +  " " + Math.round(location.getZ());
+        return Math.ceil(location.getX()) + " " + Math.ceil(location.getY()) +  " " + Math.ceil(location.getZ());
     }
 }
