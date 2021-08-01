@@ -23,6 +23,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
@@ -118,7 +119,7 @@ public class GameListener implements Listener {
 
         if (runnable.getState() != State.GAMING) return;
 
-        if (runnable.getKillers().contains(e.getDamage())) return;
+        if (runnable.getKillers().contains(e.getEntity())) e.setCancelled(true);
     }
 
     @EventHandler
@@ -133,9 +134,29 @@ public class GameListener implements Listener {
         }
 
         if (runnable.getKillers().contains(e.getDamager()) && runnable.getStudents().contains(e.getEntity())) {
+            Player killer = (Player) e.getDamager();
+            if (killer.getEquipment().getItemInMainHand().getType() != Material.IRON_SWORD) return;
             Player p = (Player) e.getEntity();
             p.damage(100000);
         }
+    }
+
+    @EventHandler
+    public void onDeath(PlayerDeathEvent e) {
+        GameRunnable runnable = KaradaSagasi.getPlugin().getGameRunnable();
+
+        if (!runnable.getStudents().contains(e.getEntity())) return;
+
+        e.setDeathMessage("§c" + e.getEntity().getName() + "が赤い人に殺された");
+
+        GamePlayer gamePlayer = KaradaSagasi.getPlugin().getPlayerManager().getGamePlayer(e.getEntity().getUniqueId());
+        gamePlayer.getTempPlayer().setDie(true);
+
+        Bukkit.getScheduler().scheduleSyncDelayedTask(KaradaSagasi.getPlugin(), () -> {
+            runnable.getDiedStudents().add(e.getEntity());
+            e.getEntity().setPlayerListName("§7[生徒] " + e.getEntity().getName() + " §7[§7Lv:§7" + gamePlayer.getHasLevel().getValue() + "§7]");
+            KaradaSagasi.getPlugin().getBoardManager().update();
+        });
     }
 
     @EventHandler
@@ -151,18 +172,9 @@ public class GameListener implements Listener {
 
         if (!runnable.getStudents().contains(e.getPlayer())) return;
 
-        GamePlayer gamePlayer = KaradaSagasi.getPlugin().getPlayerManager().getGamePlayer(e.getPlayer().getUniqueId());
-        gamePlayer.getTempPlayer().setDie(true);
         PrisonLocationMap prisonLocationMap = runnable.getStage().getPrisonLocationMap();
         TeleportLocation teleportLocation = prisonLocationMap.getPrisonTeleportLocations().toArray(
                 new TeleportLocation[prisonLocationMap.getPrisonTeleportLocations().size()])[new Random().nextInt(prisonLocationMap.getPrisonTeleportLocations().size())];
-
-        Bukkit.getScheduler().scheduleSyncDelayedTask(KaradaSagasi.getPlugin(), () -> {
-            e.getPlayer().teleport(teleportLocation.getLocation());
-            runnable.getDiedStudents().add(e.getPlayer());
-            e.getPlayer().setPlayerListName("§7[生徒] " + e.getPlayer().getName() + " §7[§7Lv:§7" + gamePlayer.getHasLevel().getValue() + "§7]");
-            KaradaSagasi.getPlugin().getBoardManager().update();
-        });
-
+        e.getPlayer().teleport(teleportLocation.getLocation());
     }
 }

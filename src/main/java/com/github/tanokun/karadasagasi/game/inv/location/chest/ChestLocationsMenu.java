@@ -2,6 +2,7 @@ package com.github.tanokun.karadasagasi.game.inv.location.chest;
 
 import com.github.tanokun.karadasagasi.KaradaSagasi;
 import com.github.tanokun.karadasagasi.game.inv.SettingStageMenu;
+import com.github.tanokun.karadasagasi.game.inv.location.SettingStageLocationsMenu;
 import com.github.tanokun.karadasagasi.game.stage.Stage;
 import com.github.tanokun.karadasagasi.util.ItemUtils;
 import com.github.tanokun.karadasagasi.util.YamlUtils;
@@ -26,7 +27,7 @@ public class ChestLocationsMenu implements InventoryProvider {
                 .updatePeriod(0)
                 .provider(this)
                 .cancelable(true)
-                .size(1, 9)
+                .size(3, 9)
                 .build();
     }
 
@@ -38,20 +39,24 @@ public class ChestLocationsMenu implements InventoryProvider {
     public void init(Player player, InventoryContents contents) {
         KaradaSagasi.playSound(player, Sound.ENTITY_SHULKER_OPEN, 1 ,1);
 
-        contents.set(0, 1, ClickableItem.of(ItemUtils.createItem(Material.CHEST, "§6§l1階のチェスト", 1, false), e -> {
+        contents.set(1, 1, ClickableItem.of(ItemUtils.createItem(Material.CHEST, "§6§l1階のチェスト", 1, false), e -> {
             new ChestFirstFloorLocationsMenu(stage).getInv().open(player);
         }));
 
-        contents.set(0, 3, ClickableItem.of(ItemUtils.createItem(Material.CHEST, "§6§l2階のチェスト", 1, false), e -> {
+        contents.set(1, 3, ClickableItem.of(ItemUtils.createItem(Material.CHEST, "§6§l2階のチェスト", 1, false), e -> {
             new ChestSecondFloorLocationsMenu(stage).getInv().open(player);
         }));
 
-        contents.set(0, 5, ClickableItem.of(ItemUtils.createItem(Material.CHEST, "§6§l3階のチェスト", 1, false), e -> {
+        contents.set(1, 5, ClickableItem.of(ItemUtils.createItem(Material.CHEST, "§6§l3階のチェスト", 1, false), e -> {
             new ChestThirdFloorLocationsMenu(stage).getInv().open(player);
         }));
 
-        contents.set(0, 7, ClickableItem.of(ItemUtils.createItem(Material.CHEST, "§6§l4階のチェスト", 1, false), e -> {
+        contents.set(1, 7, ClickableItem.of(ItemUtils.createItem(Material.CHEST, "§6§l4階のチェスト", 1, false), e -> {
             new ChestFourthFloorLocationsMenu(stage).getInv().open(player);
+        }));
+
+        contents.set(2, 8, ClickableItem.of(ItemUtils.createItem(Material.REDSTONE_BLOCK, "§c§l戻る", 1, false), e -> {
+            new SettingStageLocationsMenu(stage).getInv().open(player);
         }));
     }
 }

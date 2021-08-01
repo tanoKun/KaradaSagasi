@@ -39,7 +39,7 @@ public class SettingStageMenu implements InventoryProvider {
     public void init(Player player, InventoryContents contents) {
         KaradaSagasi.playSound(player, Sound.ENTITY_SHULKER_OPEN, 1 ,1);
 
-        contents.set(0, 10, ClickableItem.of(ItemUtils.createItem(Material.WATCH, "§b§l時間変更", Arrays.asList("§7現在: " + stage.getTime()), 1, false), no -> {
+        contents.set(1, 1, ClickableItem.of(ItemUtils.createItem(Material.WATCH, "§b§l時間変更", Arrays.asList("§7現在: " + stage.getTime()), 1, false), no -> {
             new AnvilGUI("§b§l時間変更", ItemUtils.createItem(Material.ANVIL, "時間を入力 (" + "§7現在: " + stage.getTime() + ")", 1, false), e -> {
                 String time = e.getItem().getItemMeta().getDisplayName();
 
@@ -59,15 +59,15 @@ public class SettingStageMenu implements InventoryProvider {
             }).open(player);
         }));
 
-        contents.set(0, 13, ClickableItem.of(ItemUtils.createItem(Material.ENDER_PORTAL_FRAME, "§d§lロケーション関係", 1, false), e -> {
+        contents.set(1, 4, ClickableItem.of(ItemUtils.createItem(Material.ENDER_PORTAL_FRAME, "§d§lロケーション関係", 1, false), e -> {
             new SettingStageLocationsMenu(stage).getInv().open(player);
         }));
 
-        contents.set(0, 16, ClickableItem.of(ItemUtils.createItem(Material.MAP, "§f§lその他", 1, false), e -> {
+        contents.set(1, 7, ClickableItem.of(ItemUtils.createItem(Material.MAP, "§f§lその他", 1, false), e -> {
             new SettingOtherMenu(stage).getInv().open(player);
         }));
 
-        contents.set(0, 26, ClickableItem.of(ItemUtils.createItem(Material.REDSTONE_BLOCK, "§c§l戻る", 1, false), e -> {
+        contents.set(2, 8, ClickableItem.of(ItemUtils.createItem(Material.REDSTONE_BLOCK, "§c§l戻る", 1, false), e -> {
             new SettingStageListMenu().getInv().open(player);
         }));
     }

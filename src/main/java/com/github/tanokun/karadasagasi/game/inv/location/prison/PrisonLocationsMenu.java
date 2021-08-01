@@ -1,6 +1,7 @@
 package com.github.tanokun.karadasagasi.game.inv.location.prison;
 
 import com.github.tanokun.karadasagasi.KaradaSagasi;
+import com.github.tanokun.karadasagasi.game.inv.location.SettingStageLocationsMenu;
 import com.github.tanokun.karadasagasi.game.inv.location.killer.KillerSpawnDeleteCheckMenu;
 import com.github.tanokun.karadasagasi.game.stage.Stage;
 import com.github.tanokun.karadasagasi.game.stage.teleport.TeleportLocation;
@@ -64,6 +65,10 @@ public class PrisonLocationsMenu implements InventoryProvider {
                 contents.inventory().open(player);
                 player.sendMessage(KaradaSagasi.PX + "§b牢屋「" + name + "§b」を作成しました");
             }).open(player);
+        }));
+
+        contents.set(5, 8, ClickableItem.of(ItemUtils.createItem(Material.REDSTONE_BLOCK, "§c§l戻る", 1, false), e -> {
+            new SettingStageLocationsMenu(stage).getInv().open(player);
         }));
     }
 }

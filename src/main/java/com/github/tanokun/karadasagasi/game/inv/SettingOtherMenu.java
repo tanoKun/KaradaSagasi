@@ -1,6 +1,7 @@
 package com.github.tanokun.karadasagasi.game.inv;
 
 import com.github.tanokun.karadasagasi.KaradaSagasi;
+import com.github.tanokun.karadasagasi.game.inv.location.chest.ChestLocationsMenu;
 import com.github.tanokun.karadasagasi.game.stage.Stage;
 import com.github.tanokun.karadasagasi.util.ItemUtils;
 import com.github.tanokun.karadasagasi.util.YamlUtils;
@@ -40,7 +41,7 @@ public class SettingOtherMenu implements InventoryProvider {
     public void init(Player player, InventoryContents contents) {
         KaradaSagasi.playSound(player, Sound.ENTITY_SHULKER_OPEN, 1 ,1);
 
-        contents.set(0, 1, ClickableItem.of(ItemUtils.createItem(Material.DIAMOND, "§6§l収納箱の設定", Arrays.asList("§7現在: " + YamlUtils.LocationToString(stage.getBodyLocation())), 1, false), e -> {
+        contents.set(0, 1, ClickableItem.of(ItemUtils.createItem(Material.CHEST, "§6§l収納箱の設定", Arrays.asList("§7現在: " + YamlUtils.LocationToString(stage.getBodyLocation())), 1, false), e -> {
             KaradaSagasi.playSound(player, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1 ,1);
             contents.inventory().close(player);
             player.sendMessage(KaradaSagasi.PX + "§b収納箱を壊してください");
@@ -93,5 +94,8 @@ public class SettingOtherMenu implements InventoryProvider {
             }).open(player);
         }));
 
+        contents.set(0, 8, ClickableItem.of(ItemUtils.createItem(Material.REDSTONE_BLOCK, "§c§l戻る", 1, false), e -> {
+            new SettingStageMenu(stage).getInv().open(player);
+        }));
     }
 }

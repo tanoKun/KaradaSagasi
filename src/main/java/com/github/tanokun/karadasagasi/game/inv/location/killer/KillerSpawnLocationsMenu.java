@@ -2,6 +2,7 @@ package com.github.tanokun.karadasagasi.game.inv.location.killer;
 
 import com.github.tanokun.karadasagasi.KaradaSagasi;
 import com.github.tanokun.karadasagasi.game.inv.StageDeleteCheckMenu;
+import com.github.tanokun.karadasagasi.game.inv.location.SettingStageLocationsMenu;
 import com.github.tanokun.karadasagasi.game.stage.Stage;
 import com.github.tanokun.karadasagasi.game.stage.teleport.TeleportLocation;
 import com.github.tanokun.karadasagasi.util.ItemUtils;
@@ -59,6 +60,10 @@ public class KillerSpawnLocationsMenu implements InventoryProvider {
                 contents.inventory().open(player);
                 player.sendMessage(KaradaSagasi.PX + "§bスポーン位置「" + name + "§b」を作成しました");
             }).open(player);
+        }));
+
+        contents.set(5, 8, ClickableItem.of(ItemUtils.createItem(Material.REDSTONE_BLOCK, "§c§l戻る", 1, false), e -> {
+            new SettingStageLocationsMenu(stage).getInv().open(player);
         }));
     }
 }

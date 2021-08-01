@@ -7,16 +7,14 @@ import com.github.tanokun.karadasagasi.game.stage.Stage;
 import com.github.tanokun.karadasagasi.game.stage.teleport.TeleportLocation;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Chest;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -114,18 +112,22 @@ public class GameRunnable {
         }, 120);
 
         for (Location location : stage.getChestLocationMap().getFirstFloorChestLocations()) {
+            if (location.getWorld().getBlockAt(location).getType() == Material.CHEST) continue;
             location.getWorld().getBlockAt(location).setType(Material.CHEST);
         }
 
         for (Location location : stage.getChestLocationMap().getSecondFloorChestLocations()) {
+            if (location.getWorld().getBlockAt(location).getType() == Material.CHEST) continue;
             location.getWorld().getBlockAt(location).setType(Material.CHEST);
         }
 
         for (Location location : stage.getChestLocationMap().getThirdFloorChestLocations()) {
+            if (location.getWorld().getBlockAt(location).getType() == Material.CHEST) continue;
             location.getWorld().getBlockAt(location).setType(Material.CHEST);
         }
 
         for (Location location : stage.getChestLocationMap().getFourthFloorChestLocations()) {
+            if (location.getWorld().getBlockAt(location).getType() == Material.CHEST) continue;
             location.getWorld().getBlockAt(location).setType(Material.CHEST);
         }
 
@@ -196,6 +198,18 @@ public class GameRunnable {
         chest = (Chest) bodyLoc.getWorld().getBlockAt(bodyLoc).getState();
         chest.getBlockInventory().setItem(new Random().nextInt(27), new ItemStack(Material.DIAMOND_HELMET));
 
+        for (Player p : killers) {
+            p.getInventory().setItem(1, new ItemStack(Material.IRON_SWORD));
+            ItemStack helmet = new ItemStack(Material.LEATHER_HELMET); LeatherArmorMeta leather = (LeatherArmorMeta) helmet.getItemMeta(); leather.setColor(Color.RED);
+            ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE); leather = (LeatherArmorMeta) chestplate.getItemMeta(); leather.setColor(Color.RED);
+            ItemStack leggings = new ItemStack(Material.LEATHER_LEGGINGS); leather = (LeatherArmorMeta) leggings.getItemMeta(); leather.setColor(Color.RED);
+            ItemStack boots = new ItemStack(Material.LEATHER_BOOTS); leather = (LeatherArmorMeta) boots.getItemMeta(); leather.setColor(Color.RED);
+            p.getInventory().setHelmet(helmet);
+            p.getInventory().setChestplate(chestplate);
+            p.getInventory().setLeggings(leggings);
+            p.getInventory().setBoots(boots);
+        }
+
         return null;
     }
 
@@ -209,6 +223,7 @@ public class GameRunnable {
             gamePlayer.setTempPlayer(new TempPlayer());
             p.setPlayerListName("§7" + p.getName() + " §7[§dLv:§e" + KaradaSagasi.getPlugin().getPlayerManager().getGamePlayer(p.getUniqueId()).getHasLevel().getValue() + "§7]");
             Bukkit.getOnlinePlayers().stream().forEach(player -> KaradaSagasi.playSound(player, Sound.ENTITY_WOLF_HOWL, 1, 1));
+            p.getInventory().clear();
         }
 
         if (endState == GameEndState.DRAW) {

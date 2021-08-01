@@ -1,6 +1,7 @@
 package com.github.tanokun.karadasagasi.game.inv.location;
 
 import com.github.tanokun.karadasagasi.KaradaSagasi;
+import com.github.tanokun.karadasagasi.game.inv.SettingStageMenu;
 import com.github.tanokun.karadasagasi.game.inv.location.chest.ChestLocationsMenu;
 import com.github.tanokun.karadasagasi.game.inv.location.killer.KillerSpawnLocationsMenu;
 import com.github.tanokun.karadasagasi.game.inv.location.prison.PrisonLocationsMenu;
@@ -28,7 +29,7 @@ public class SettingStageLocationsMenu implements InventoryProvider {
                 .updatePeriod(0)
                 .provider(this)
                 .cancelable(true)
-                .size(1, 9)
+                .size(3, 9)
                 .build();
     }
 
@@ -48,16 +49,20 @@ public class SettingStageLocationsMenu implements InventoryProvider {
             contents.inventory().open(player);
         }));
 
-        contents.set(0, 3, ClickableItem.of(ItemUtils.createItem(Material.REDSTONE, "§c§l赤い人のスポーン位置", 1, false),e -> {
+        contents.set(1, 3, ClickableItem.of(ItemUtils.createItem(Material.REDSTONE, "§c§l赤い人のスポーン位置", 1, false),e -> {
             new KillerSpawnLocationsMenu(stage).getInv().open(player);
         }));
 
-        contents.set(0, 5, ClickableItem.of(ItemUtils.createItem(Material.BEACON, "§b§l牢屋位置", 1, false),e -> {
+        contents.set(1, 5, ClickableItem.of(ItemUtils.createItem(Material.BEACON, "§b§l牢屋位置", 1, false),e -> {
             new PrisonLocationsMenu(stage).getInv().open(player);
         }));
 
-        contents.set(0, 7, ClickableItem.of(ItemUtils.createItem(Material.CHEST, "§6§lチェスト位置", 1, false),e -> {
+        contents.set(1, 7, ClickableItem.of(ItemUtils.createItem(Material.CHEST, "§6§lチェスト位置", 1, false),e -> {
             new ChestLocationsMenu(stage).getInv().open(player);
+        }));
+
+        contents.set(2, 8, ClickableItem.of(ItemUtils.createItem(Material.REDSTONE_BLOCK, "§c§l戻る", 1, false), e -> {
+            new SettingStageMenu(stage).getInv().open(player);
         }));
 
     }
